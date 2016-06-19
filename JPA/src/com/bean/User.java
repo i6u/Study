@@ -15,7 +15,37 @@ public class User implements Serializable {
     private String name;
     private Date birthday;
     private Gender gender;
+    private String info;
+    private byte[] pic;
+    private String tempPath;
 
+    @Transient  //声明临时字段,不在数据库存放
+    public String getTempPath() {
+        return tempPath;
+    }
+
+    public void setTempPath(String tempPath) {
+        this.tempPath = tempPath;
+    }
+
+    @Lob//声明大文本类型,数据库存放二进制文件时
+    public String getInfo() {
+        return info;
+    }
+
+    public void setInfo(String info) {
+        this.info = info;
+    }
+
+    @Lob //存放二进制数据
+    @Basic(fetch = FetchType.LAZY)//设置该字段为延时加载
+    public byte[] getPic() {
+        return pic;
+    }
+
+    public void setPic(byte[] pic) {
+        this.pic = pic;
+    }
 
     public User() {
     }
@@ -77,4 +107,6 @@ public class User implements Serializable {
                 ", gender=" + gender +
                 '}';
     }
+
+
 }
