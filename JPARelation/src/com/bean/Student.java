@@ -18,7 +18,7 @@ public class Student {
         this.teachers.add(teacher);
     }
 
-    public void reomveTeacher(Teacher teacher) {
+    public void reomveTeacher(Teacher teacher) {//此方法首先得判断teacher是否存在于teachers的set集合中,所以得重写equals和hashCode方法
         if (this.teachers.contains(teacher)) this.teachers.remove(teacher);
     }
 
