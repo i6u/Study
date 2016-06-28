@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
+import java.util.Set;
 
 /**
  * Created by zhouweitao on 16/6/20.
@@ -27,9 +28,9 @@ public class Many2Many {
         transaction.begin();
 
         Teacher teacher = new Teacher("李老师");
-//        Student student = new Student("周学生");
+        Student student = new Student("周学生");
         Util.getManager().persist(teacher);
-//        Util.getManager().persist(student);
+        Util.getManager().persist(student);
         transaction.commit();
         Util.getManager().close();
     }
@@ -37,6 +38,7 @@ public class Many2Many {
 
     /**
      * 建立老师和学生的关系
+     * 通过关系维护端建立老师和学生的关系
      * */
     @Test
     public void saveRelation() {
@@ -51,7 +53,7 @@ public class Many2Many {
     }
 
     /**
-     * 删除老师和学生的关系
+//     * 删除老师和学生的关系
      * */
     @Test
     public void clearRelation() {
@@ -59,8 +61,9 @@ public class Many2Many {
         EntityManager em = Util.getManager();
         transaction.begin();
         Student student = em.find(Student.class, 1);
-        student.reomveTeacher(em.getReference(Teacher.class,1)); //应为不需要进行实体的装载,是用托管状态的实体有助于提高性能(getReference()为延迟加载方法)
+        student.reomveTeacher(em.getReference(Teacher.class,1)); //应为不需要进行实体的装载,所以用托管状态的实体有助于提高性能(getReference()为延迟加载方法)
         em.persist(student);
+
         transaction.commit();
         Util.getManager().close();
     }
@@ -75,7 +78,7 @@ public class Many2Many {
         transaction.begin();
         Student student = em.find(Student.class, 1);
         student.reomveTeacher(em.getReference(Teacher.class,1));//解除老师和学生之间的关系
-        em.remove(em.getReference(Teacher.class,1));            //应为老师为关系被维护端,所以删除老师需要先解除老师和学生的关系
+        em.remove(em.getReference(Teacher.class,2));            //应为老师为关系被维护端,所以删除老师需要先解除老师和学生的关系
         transaction.commit();
         Util.getManager().close();
     }
@@ -92,5 +95,18 @@ public class Many2Many {
         em.remove(em.getReference(Student.class,1)); //学生为关系的维护端,删除学生不需要先解除学生和老师之间的关系
         transaction.commit();
         Util.getManager().close();
+    }
+
+    @Test
+    public void find01() {
+        EntityManager em = Util.getManager();
+        EntityTransaction transaction = em.getTransaction();
+
+        Student student = em.find(Student.class, 1);
+        System.out.println("student = " + student);
+        Set<Teacher> teachers = student.getTeachers();
+        for (Teacher teacher : teachers) {
+            System.out.println(teacher);
+        }
     }
 }
