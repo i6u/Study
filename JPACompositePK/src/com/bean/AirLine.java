@@ -3,11 +3,13 @@ package com.bean;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 /**
  * Created by zhouweitao on 16/6/20.
  */
 @Entity
+@Table(name = "t_AirLine")
 public class AirLine {
     private AirLinePK id;
     private String name;

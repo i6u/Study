@@ -25,10 +25,12 @@ public class One2One {
     public void save() {
         EntityTransaction transaction = Util.getManager().getTransaction();
         transaction.begin();
-        Person person = new Person("老张");
+        Person person = new Person("老K");
         IDCard idCard = new IDCard(UUID.randomUUID().toString().substring(18));
-        person.setIdCard(idCard);
-        Util.getManager().persist(person);
+//        person.setIdCard(idCard);
+//        Util.getManager().persist(person);
+        idCard.setPerson(person);
+        Util.getManager().persist(idCard);
         transaction.commit();
         Util.close();
     }

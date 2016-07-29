@@ -13,20 +13,19 @@ public class Student {
     private String name;
     private Set<Teacher> teachers = new HashSet<Teacher>();
 
-
-    public void addTeacher(Teacher teacher) {
-        this.teachers.add(teacher);
-    }
-
-    public void reomveTeacher(Teacher teacher) {//此方法首先得判断teacher是否存在于teachers的set集合中,所以得重写equals和hashCode方法
-        if (this.teachers.contains(teacher)) this.teachers.remove(teacher);
-    }
-
     public Student() {
     }
 
     public Student(String name) {
         this.name = name;
+    }
+
+    public void addTeacher(Teacher teacher) {
+        this.teachers.add(teacher);
+    }
+
+    public void reomveTeacher(Teacher teacher) {//此方法首先得判断teacher是否存在于teachers的set集合中,所以得重写(teacher实体的)equals和hashCode方法
+        if (this.teachers.contains(teacher)) this.teachers.remove(teacher);
     }
 
     @ManyToMany(cascade = CascadeType.REFRESH)//多对对关联关系

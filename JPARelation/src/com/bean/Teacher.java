@@ -21,7 +21,20 @@ public class Teacher {
         this.name = name;
     }
 
-    @ManyToMany(cascade = CascadeType.REFRESH,mappedBy = "teachers",fetch = FetchType.LAZY)//默认就为延迟加载
+    public void addStudent(Student student) {
+        this.students.add(student);
+    }
+
+    public void removeStudent(Student student) {
+        if (this.students.contains(student)) {
+            this.students.remove(student);
+        }
+    }
+
+    @ManyToMany(cascade = CascadeType.REFRESH)//默认就为延迟加载fetch = FetchType.LAZY
+    @JoinTable(name = "student_teacher",        //在关系维护端设置中间表信息
+            inverseJoinColumns = @JoinColumn(name = "s_id"),//inverseJoinColumns设置关系被维护端在中间表中的信息,其中@joinColumn(name)设置中间表中那个字段与关系被维护端的主键关联
+            joinColumns = @JoinColumn(name = "t_id"))//joinColumns设置关系维护端在中间表中的信息,其中@joinColumn(name)设置中间表中那个字段与关系维护端的主键关联
     public Set<Student> getStudents() {
         return students;
     }
@@ -47,5 +60,14 @@ public class Teacher {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", students=" + students +
+                '}';
     }
 }

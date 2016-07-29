@@ -6,12 +6,17 @@ import java.io.Serializable;
 
 /**
  * Created by zhouweitao on 16/6/20.
+ * jpa联合主键
+ *
+ * 需要注意的地方:
+ * 1.必须提供一个public的无参数构造方法
+ * 2.必须实现序列化接口
+ * 3.必须重写equals和hashCode方法
  */
 @Embeddable//声明此类只是作为其他类的一个持久化字段
 public class AirLinePK implements Serializable{
     private String startCity;
     private String endCity;
-
 
     public AirLinePK() {
     }

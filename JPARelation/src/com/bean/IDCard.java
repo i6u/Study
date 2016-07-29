@@ -26,6 +26,7 @@ public class IDCard {
     }
 
     public void setPerson(Person person) {
+        person.setIdCard(this);
         this.person = person;
     }
 

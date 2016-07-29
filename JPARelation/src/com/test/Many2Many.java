@@ -27,8 +27,8 @@ public class Many2Many {
         EntityTransaction transaction = Util.getManager().getTransaction();
         transaction.begin();
 
-        Teacher teacher = new Teacher("李老师");
-        Student student = new Student("周学生");
+        Teacher teacher = new Teacher("曹老师");
+        Student student = new Student("吴学生");
         Util.getManager().persist(teacher);
         Util.getManager().persist(student);
         transaction.commit();
@@ -38,7 +38,7 @@ public class Many2Many {
 
     /**
      * 建立老师和学生的关系
-     * 通过关系维护端建立老师和学生的关系
+     * 通过关系维护端(学生端)建立老师和学生的关系
      * */
     @Test
     public void saveRelation() {
@@ -46,8 +46,11 @@ public class Many2Many {
         EntityManager em = Util.getManager();
         transaction.begin();
         Student student = em.find(Student.class, 1);
-        student.addTeacher(em.find(Teacher.class,2));
+        student.addTeacher(em.getReference(Teacher.class,2));
         em.persist(student);
+        Teacher teacher = em.find(Teacher.class,2);
+        teacher.addStudent(em.getReference(Student.class,2));
+        em.persist(teacher);
         transaction.commit();
         Util.getManager().close();
     }
@@ -106,7 +109,9 @@ public class Many2Many {
         System.out.println("student = " + student);
         Set<Teacher> teachers = student.getTeachers();
         for (Teacher teacher : teachers) {
-            System.out.println(teacher);
+            System.out.println(teacher.toString());
         }
     }
+
+
 }
